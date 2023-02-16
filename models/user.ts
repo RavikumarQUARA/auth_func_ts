@@ -4,9 +4,12 @@ import {
   DataType,
   Model, UUIDV4
 } from 'sequelize'
+import { Param } from 'typescript-mvc';
+import isEmail from 'validator/lib/isEmail';
 interface UserAttributes {
   id: string;
   email: string;
+  password: string;
   name: string;
   username: string;
   //bio:string;
@@ -17,6 +20,7 @@ module.exports = (sequelize: any, DataTypes:any) => {
   implements UserAttributes {
     id!: string;
   email!: string;
+  password!: string;
   name!: string;
   username!: string;
   //bio!:string;
@@ -47,6 +51,20 @@ module.exports = (sequelize: any, DataTypes:any) => {
         isEmail:{msg: 'email must be valid'}
       }
     },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull:{msg: 'password is required'},
+        notEmpty:{msg: 'password must be not empty'},
+        len: {
+          args: [8, Number.MAX_SAFE_INTEGER],
+          msg: 'password must be at least 8 characters long'
+        }
+        
+        
+      }
+    },
     name: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -63,11 +81,9 @@ module.exports = (sequelize: any, DataTypes:any) => {
         notNull:{msg: 'username is required'},
         notEmpty:{msg: 'username must be not empty'}
       }
-     
-    },
-    
-    
-  }, {
+    },  
+  },
+   {
     sequelize,
     //tableName: 'Users',
     modelName: 'User',

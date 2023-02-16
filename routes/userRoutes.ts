@@ -1,12 +1,19 @@
 import  express from 'express'
-import { getUsers, createUser,updateUser ,deleteUser} from '../controllers/userControllers' 
+import { createUser,updateUser ,deleteUser,getUser,login, logout} from '../controllers/userControllers' 
+import auth from '../middleware/auth'
+
 
 const routes = express.Router()
+routes.post('/login', login)
 
-routes.get('/get', getUsers);
-routes.post("/create", createUser);
-routes.put("/update", updateUser);
-routes.delete("/delete", deleteUser);
+routes.post("/singup", createUser);
+
+routes.get("/logout",auth, logout);
+
+
+routes.get('/gets', auth,getUser)
+routes.put("/update",auth, updateUser);
+routes.delete("/delete/:id",auth, deleteUser);
 
 
 

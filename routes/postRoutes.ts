@@ -1,9 +1,9 @@
 import  express from 'express'
-import { createPost,getPost} from '../controllers/postControllers' 
+import { createPost,getPostsWithUser} from '../controllers/postControllers' 
 
 const routes = express.Router()
 routes.post("/create", createPost);
-routes.post("/get", getPost);
+routes.get("/get", getPostsWithUser);
 
 export default routes;
 

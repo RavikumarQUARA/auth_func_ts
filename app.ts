@@ -3,8 +3,9 @@ import db from './models';
 import express from 'express'
 import userRoutes from './routes/userRoutes'
 import postRoutes from './routes/postRoutes'
+import auth from './middleware/auth'
 
-
+//import auth from './routes/auth'
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -14,7 +15,9 @@ app.use(express.urlencoded({extended: false}))
 
 app.use('/api/user', userRoutes);
 
-app.use('api/post', postRoutes);
+app.use('/api/post',auth, postRoutes);
+//app.use('/api/auth', auth);
+
 /*
 // Create using controllers
 app.use('/api/createUser', require('./routes/createUser'));
@@ -41,7 +44,7 @@ app.use('/api/readallUser', require('./routes/readallUser'));
 
 */
 
-db.sequelize.sync().then(() => 
+db.sequelize.sync({force:false,alter:true}).then(() => 
 //db.sequelize.authenticate().then(() => 
 {
     app.listen(port, () => {
